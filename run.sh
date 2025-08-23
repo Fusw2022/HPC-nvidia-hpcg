@@ -56,7 +56,7 @@ dir="bin/"
 #=======================================================================
 echo "--- Running on ${SLURM_NTASKS} GPU ---"
 # Local problem size
-nx=320
-ny=320
-nz=320
+nx=256
+ny=256
+nz=256
 mpirun ${ext} -np $SLURM_NTASKS ${dir}/xhpcg --nx $nx --ny $ny --nz $nz --rt 30
