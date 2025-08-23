@@ -1,3 +1,40 @@
+# HPCG 基准测试优化
+这是基于集群 V100 队列的 HPCG 基准测试优化，选择的实现是nvidia-hpcg，目前白天最高 270.816 GFLOP/s，夜晚（0点后）最高 268.86 GFLOP/s。关于 Note 所列建议：
+- 使用不同的 HPCG 实现：正在尝试（因为这相当于要重新弄一个CPU版本的）
+- 调整 HPCG 的输入配置文件：采用 256x256x256
+- 尝试不同的编译器实现与版本：CXX = nvcc -ccbin icpx(qopenmp)
+- 尝试不同的编译选项：-march=cascadelake，其余的使用原生（-Ofast；-funroll-loops等均启用）
+- 尝试不同的数学库：使用原厂 nvhpc@25.1（cuda@12.8.0与此版本的HPCG并不兼容）
+- 尝试不同的 MPI 实现：使用Intel MPI（要求编译器后端使用icpx）
+- 尝试不同的 MPI 运行参数（例如进程数和核心数）：--cpus-per-task=4；启用bind-to core
+- 对源代码进行优化（较为困难）：未进行
+
+# HPCG 使用方法
+目前代码存放在 https://github.com/Fusw2022/HPC-nvidia-hpcg 下，构建脚本为build_sample.sh，运行脚本为run.sh。下载到集群后：
+1. 进入 HPC-nvidia-hpcg 文件夹
+2. 【编译】./build_sample.sh "githash" 3 1 1 1 0 1 0
+3. 【运行】sbatch run.sh
+若项目已经编译成功，可能需要首先 rm -rf build。
+
+# HPCG 实践过程
+
+## 移植到集群
+- 下载 nvidia-hpcg 代码
+- 调整 build_sample.sh 路径设置，按照 run_sample.sh 编写 run.sh 脚本并相应调整路径设置
+- 设置 makefile 中 arch = CUDA_X86
+- 调整 Make.CUDA_X86 中 CUDA_ARCH 为 CUDA_ARCH = -gencode=arch=compute_70,code=sm_70 以适配 V100 架构
+
+## 数据测试
+- 调整 HPCG 的输入配置文件：更改 run.sh 中 nx, ny, nz
+- 尝试不同的编译器/mpi实现：修改 Make.CUDA_X86 中的 CXX 与 CXXFLAGS，并在必要时修改 build_sample.sh 和 run.sh 中的路径及相应命令
+- 尝试不同的编译选项：修改 Make.CUDA_X86 中的 CPU_ARCH 与 CXXFLAGS
+- 尝试不同的 MPI 运行参数：修改 run.sh 中 sbatch 部分
+
+
+<!-- 下面是 nvidia-hpcg 自带 README 中文版-->
+
+
+
 # NVIDIA 高性能共轭梯度基准测试（HPCG）
 
 NVIDIA HPCG 基于 [HPCG](https://github.com/hpcg-benchmark/hpcg) 基准测试开发，并针对 NVIDIA 加速的高性能计算系统进行了性能优化。

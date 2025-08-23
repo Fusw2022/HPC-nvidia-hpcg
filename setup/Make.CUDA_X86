@@ -165,10 +165,17 @@ CUDA_ARCH = -gencode=arch=compute_70,code=sm_70
 ifeq ($(BUILD_B100), 1)
 CUDA_ARCH += --generate-code arch=compute_100a,code=sm_100a
 endif
-CPU_ARCH ?= native
+# CPU_ARCH ?= native
+CPU_ARCH ?= cascadelake
 
-CXX          = nvcc
-CXXFLAGS     = $(HPCG_DEFS) -O3 -Xcompiler --std=c++17 -Xcompiler -Ofast,-fopenmp,-mcpu=$(CPU_ARCH),-mtune=$(CPU_ARCH),-ftree-vectorize,-funroll-loops $(CUDA_ARCH)
+# CXX          = nvcc
+# CXXFLAGS     = $(HPCG_DEFS) -O3 -Xcompiler --std=c++17 -Xcompiler -Ofast,-fopenmp,-march=native,-mtune=$(CPU_ARCH),-ftree-vectorize,-funroll-loops $(CUDA_ARCH)
+CXX          = nvcc -ccbin icpx
+CXXFLAGS     = $(HPCG_DEFS) -O3 -Xcompiler --std=c++17 -Xcompiler -Ofast,-qopenmp,-march=$(CPU_ARCH),-mtune=$(CPU_ARCH),-ftree-vectorize,-funroll-loops $(CUDA_ARCH)
+# CXXFLAGS     = $(HPCG_DEFS) -O3 -Xcompiler --std=c++17 -Xcompiler -Ofast,-fopenmp,-march=$(CPU_ARCH),-mtune=$(CPU_ARCH),-ftree-vectorize,-funroll-loops $(CUDA_ARCH)
+# CXXFLAGS     = $(HPCG_DEFS) -O3 -Xcompiler --std=c++17 -Xcompiler -Ofast,-fopenmp,-march=native,-ftree-vectorize $(CUDA_ARCH)
+# CXXFLAGS     = $(HPCG_DEFS) -O3 -Xcompiler --std=c++17 -Xcompiler -Ofast,-fopenmp,-march=native,-ftree-vectorize,-funroll-loops $(CUDA_ARCH)
+# CXXFLAGS     = $(HPCG_DEFS) -O3 -Xcompiler --std=c++17 -Xcompiler -Ofast,-fopenmp,-mcpu=$(CPU_ARCH),-mtune=$(CPU_ARCH),-ftree-vectorize,-funroll-loops $(CUDA_ARCH)
 
 #
 LINKER       = $(CXX)

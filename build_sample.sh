@@ -15,6 +15,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+source /pxe/opt/spack/opt/spack/linux-debian12-haswell/gcc-12.2.0/intel-oneapi-compilers-2025.0.4-l4ofpzkv4tomad2jkp4pe5vxuvmjnsfi/setvars.sh
+
 # Path to your NVHPC installation
 export NVHPC_BASE=/pxe/opt/spack/opt/spack/linux-debian12-haswell/gcc-12.2.0/nvhpc-25.1-gfpvhsdurdxu5qqwgkxsn6m76eohxn25/Linux_x86_64/25.1
 
@@ -24,7 +26,9 @@ export CUDA_PATH=${NVHPC_BASE}/cuda
 
 # --- CORRECTED PATHS START HERE ---
 # Select a specific MPI implementation from your NVHPC installation
-export MPI_PATH=${NVHPC_BASE}/comm_libs/12.6/openmpi4/openmpi-4.1.5
+# export MPI_PATH=${NVHPC_BASE}/comm_libs/12.6/openmpi4/openmpi-4.1.5
+# export MPI_PATH=${NVHPC_BASE}/comm_libs/12.6/hpcx/hpcx-2.21/ompi
+export MPI_PATH=/pxe/opt/spack/opt/spack/linux-debian12-haswell/gcc-12.2.0/intel-oneapi-mpi-2021.14.1-jdda552mqvxz4g6vuwkboc7biptbtgge/mpi/2021.14
 
 # NCCL is also located in a version-specific directory
 export NCCL_PATH=${NVHPC_BASE}/comm_libs/12.6/nccl

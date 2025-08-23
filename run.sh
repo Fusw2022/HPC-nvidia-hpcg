@@ -23,13 +23,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# Path to your NVHPC installation
+# Path to NVHPC installation
 export NVHPC_BASE=/pxe/opt/spack/opt/spack/linux-debian12-haswell/gcc-12.2.0/nvhpc-25.1-gfpvhsdurdxu5qqwgkxsn6m76eohxn25/Linux_x86_64/25.1
 
 # Set paths to components within NVHPC
 export CXX_PATH=${NVHPC_BASE}/compilers
 export CUDA_PATH=${NVHPC_BASE}/cuda
-export MPI_PATH=${NVHPC_BASE}/comm_libs/12.6/openmpi4/openmpi-4.1.5
+# export MPI_PATH=${NVHPC_BASE}/comm_libs/12.6/openmpi4/openmpi-4.1.5
+# export MPI_PATH=${NVHPC_BASE}/comm_libs/12.6/hpcx/hpcx-2.21/ompi
+export MPI_PATH=/pxe/opt/spack/opt/spack/linux-debian12-haswell/gcc-12.2.0/intel-oneapi-mpi-2021.14.1-jdda552mqvxz4g6vuwkboc7biptbtgge/mpi/2021.14
 export NCCL_PATH=${NVHPC_BASE}/comm_libs/12.6/nccl
 export MATHLIBS_PATH=${NVHPC_BASE}/math_libs
 export NVPL_SPARSE=${NVHPC_BASE}/math_libs # NVPL is in math_libs
@@ -42,21 +44,13 @@ export PATH=${CUDA_PATH}/bin:${MPI_PATH}/bin:${PATH}
 export LD_LIBRARY_PATH=${CUDA_PATH}/lib64:${MPI_PATH}/lib:${NCCL_PATH}/lib:${MATHLIBS_PATH}/${CUDA_BLAS_VERSION}/lib64:${LD_LIBRARY_PATH}
 export LD_LIBRARY_PATH=${NVPL_SPARSE}/${CUDA_BLAS_VERSION}/lib64:${LD_LIBRARY_PATH}
 
-
-# Common MPI runtime arguments for NVIDIA GPUs
-# These are generally safe defaults. You may need to tune them for your specific cluster interconnect (e.g., InfiniBand).
-ext="--mca pml ucx -x UCX_TLS=sm,cuda,cuda_copy,gdr_copy"
-
-# Directory where the xhpcg binary is located
 dir="bin/"
 
-#=======================================================================
-# Sample Run on a single V100 GPU
-# This is a good first test to ensure everything works.
-#=======================================================================
 echo "--- Running on ${SLURM_NTASKS} GPU ---"
 # Local problem size
 nx=256
 ny=256
 nz=256
-mpirun ${ext} -np $SLURM_NTASKS ${dir}/xhpcg --nx $nx --ny $ny --nz $nz --rt 30
+export OMP_NUM_THREADS=${SLURM_CPUS_PER_TASK:-4}
+# mpirun ${ext} -np $SLURM_NTASKS --bind-to core ${dir}/xhpcg --nx $nx --ny $ny --nz $nz --rt 30
+mpirun -np $SLURM_NTASKS ${dir}/xhpcg --nx $nx --ny $ny --nz $nz --rt 30
