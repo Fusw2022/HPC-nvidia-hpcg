@@ -1,6 +1,6 @@
 # HPCG 基准测试优化
 这是基于集群 V100 队列的 HPCG 基准测试优化，选择的实现是nvidia-hpcg，目前白天最高 270.816 GFLOP/s，夜晚（0点后）最高 268.86 GFLOP/s。关于 Note 所列建议：
-- 使用不同的 HPCG 实现：正在尝试（因为这相当于要重新弄一个CPU版本的）
+- 使用不同的 HPCG 实现：较为困难（因为这相当于要重新弄一个CPU版本的）
 - 调整 HPCG 的输入配置文件：采用 256x256x256
 - 尝试不同的编译器实现与版本：CXX = nvcc -ccbin icpx(qopenmp)
 - 尝试不同的编译选项：-march=cascadelake，其余的使用原生（-Ofast；-funroll-loops等均启用）
