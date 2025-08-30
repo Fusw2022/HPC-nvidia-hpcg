@@ -53,4 +53,4 @@ ny=256
 nz=256
 export OMP_NUM_THREADS=${SLURM_CPUS_PER_TASK:-4}
 # mpirun ${ext} -np $SLURM_NTASKS --bind-to core ${dir}/xhpcg --nx $nx --ny $ny --nz $nz --rt 30
-mpirun -np $SLURM_NTASKS ${dir}/xhpcg --nx $nx --ny $ny --nz $nz --rt 1830
+mpirun -np $SLURM_NTASKS ${dir}/xhpcg --nx $nx --ny $ny --nz $nz --rt 30
