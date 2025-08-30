@@ -58,9 +58,9 @@ fi
 ######## USE Grace CPU? ############
 # 1:         Yes
 # O:         No 
-export USE_GRACE=1
-if [[ $6 == "0" ]]; then
-    export USE_GRACE=0
+export USE_GRACE=0
+if [[ $6 == "1" ]]; then
+    export USE_GRACE=1
 fi
 ################################################
 

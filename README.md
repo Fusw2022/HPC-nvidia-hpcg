@@ -11,7 +11,7 @@
 目前代码存放在 https://github.com/Fusw2022/HPC-nvidia-hpcg 下，构建脚本为build_sample.sh，运行脚本为run.sh。
 1. 【下载】git clone https://github.com/Fusw2022/HPC-nvidia-hpcg.git
 2. 【进入】下载到集群后，进入 HPC-nvidia-hpcg 文件夹
-3. 【编译】./build_sample.sh "githash" 3 1 1 1 1 1 0
+3. 【编译】./build_sample.sh "githash" 3 1 1 1 0 1 0
 4. 【运行】sbatch run.sh
 若项目已经编译成功，可能需要首先 rm -rf build。
 
