@@ -5,7 +5,7 @@
 #SBATCH --ntasks=2
 #SBATCH --gpus=2
 #SBATCH --cpus-per-task=4
-#SBATCH --time=00:30:00
+#SBATCH --time=01:00:00
 #SBATCH --output=%x_%j.log
 
 # SPDX-FileCopyrightText: Copyright (c) 2024 NVIDIA CORPORATION & AFFILIATES. All rights reserved.
@@ -53,4 +53,4 @@ ny=256
 nz=256
 export OMP_NUM_THREADS=${SLURM_CPUS_PER_TASK:-4}
 # mpirun ${ext} -np $SLURM_NTASKS --bind-to core ${dir}/xhpcg --nx $nx --ny $ny --nz $nz --rt 30
-mpirun -np $SLURM_NTASKS ${dir}/xhpcg --nx $nx --ny $ny --nz $nz --rt 30
+mpirun -np $SLURM_NTASKS ${dir}/xhpcg --nx $nx --ny $ny --nz $nz --rt 1830
